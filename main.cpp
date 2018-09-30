@@ -31,6 +31,15 @@ static void send_data(seq_nr frame_nr, seq_nr frame_expected, packet buffer[]){
 	start_timer(frame_nr);
 }
 
+
+void funccalled(){
+//frame arrival
+	//timeout
+	//next frame to sedn
+	//check respective condition and rwturn from the loop
+
+}
+
 void protocol5(void)
 {
 	seq_nr next_frame_to_send;
@@ -50,6 +59,11 @@ void protocol5(void)
 
 
 	while(true){
+
+
+funccalled();
+
+
 		wait_for_event(&event);
 		switch (event){
 			case network_layer_ready:
@@ -96,3 +110,13 @@ void protocol5(void)
 }
 
 
+
+
+
+
+
+public static void main(String args[]){
+	//connecton made
+	datalink protocol();
+
+}

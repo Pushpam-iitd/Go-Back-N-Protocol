@@ -14,13 +14,13 @@ import java.util.*;
 import java.io.*;
 
 
-#define MAX_SEQ 7
-#define MAX_PKT 1024
+// #define MAX_SEQ 7
+// #define MAX_PKT 1024
 
-enum event_type{frame_arrival, cksum_err,timeout, network_layer_ready};
+enum event_type{frame_arrival, cksum_err,timeout, network_layer_ready;}
 
 class packet{
-public unsigned char data[MAX_PKT];
+public unsigned char data[1024];
 } 
 
 
@@ -29,6 +29,10 @@ enum frame_kind{
 	data, ack, nak;
 }
 
+public static inc(k){
+	if(k<7)k++;
+	else k=0;
+}
 
 class frame{
 frame_kind kind;
@@ -37,24 +41,24 @@ int ack;
 packet info;
 }
 
-public static boolean between(seq_nr a,seq_nr b, seq_nr c){
+public static boolean between(int a,int b, int c){
 	if(a<=b&&b<=c||c<=a&&a<=b|| b<=c&&c<=a)
 		return true;
 	else return false;
 }
 
 
-public static void send_data(seq_nr frame_nr, seq_nr frame_expected, packet buffer[]){
+public static void send_data(int frame_nr, int frame_expected, packet buffer[]){
 	frame s;
 	s.info= buffer[frame_nr];
 	s.seq = frame_nr;
-	s.ack = (frame_expected+MAX_SEQ)%(MAX_SEQ+1);
-	// to_physical_layer(s);
-	// start_timer(frame_nr);
+	s.ack = (frame_expected+7)%(8);
+	to_physical_layer(s);
+	start_timer(frame_nr);
 }
 
 
-/*
+
 
 public static void funccalled(){
 	//frame arrival
@@ -66,16 +70,16 @@ public static void funccalled(){
 
 public static void protocol5(void)
 {
-	seq_nr next_frame_to_send;
-	seq_nr ack_expected;
-	seq_nr frame_expected;
+	int next_frame_to_send;
+	int ack_expected;
+	int frame_expected;
 	frame r;
 	packet buffer[MAX_SEQ+1];
-	seq_nr nbuffered;
-	seq_nr i;
+	int nbuffered;
+	int i;
 	event_type event;
 
-	enable_network_layer();
+	// enable_network_layer();
 	ack_expected =0;
 	next_frame_to_send =0;
 	frame_expected =0;
@@ -89,6 +93,7 @@ funccalled();
 
 
 		wait_for_event(&event);
+
 		switch (event){
 			case network_layer_ready:
 			from_network_layer(&buffer[next_frame_to_send]);
